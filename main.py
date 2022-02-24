@@ -185,11 +185,9 @@ def resetter():
     final_proj = {}
 
 if __name__ == '__main__':
-    # wrapper("a_an_example.in.txt")
+    wrapper("a_an_example.in.txt")
     wrapper("b_better_start_small.in.txt")
-    # process_data("b_better_start_small.in.txt")
-    # pprint(projects)
-    # wrapper("c_collaboration.in.txt")
-    # wrapper("d_dense_schedule.in.txt")
-    # wrapper("e_exceptional_skills.in.txt")
-    # wrapper("f_find_great_mentors.in.txt")
+    wrapper("c_collaboration.in.txt")
+    wrapper("d_dense_schedule.in.txt")
+    wrapper("e_exceptional_skills.in.txt")
+    wrapper("f_find_great_mentors.in.txt")
