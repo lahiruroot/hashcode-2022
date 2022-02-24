@@ -10,7 +10,6 @@ avail = {}
 skills = {}
 projects = {}
 skillsTotal = set()
-numProj = 0
 final_proj = {}
 
 def process_data(file_path):
@@ -155,10 +154,26 @@ def submission(file_path="out.txt"):
     oh.close()
 
 def wrapper(file_path):
+    resetter()
     process_data(file_path)
     iter_basic()
     obj = file_path.split("_")[0]
     submission(f"{obj}.txt")
+
+def resetter():
+    global contributors
+    global avail
+    global skills
+    global projects
+    global skillsTotal
+    global final_proj
+    
+    contributors = {}
+    avail = {}
+    skills = {}
+    projects = {}
+    skillsTotal = set()
+    final_proj = {}
 
 if __name__ == '__main__':
     wrapper("a_an_example.in.txt")
