@@ -6,7 +6,8 @@ from cv2 import split
 import numpy as np
 
 contributors = {}
-avail = {}
+avail_contri = {}
+avail_project = {}
 skills = {}
 projects = {}
 skillsTotal = set()
@@ -22,7 +23,7 @@ def process_data(file_path):
         l2 = fh.readline().strip().split()
         name, numSkill = l2[0], l2[1]
 
-        avail[name] = 0
+        avail_contri[name] = 0
         # contributors[name] = {
         #     "C++":9,
         #     "Python":8
@@ -71,6 +72,8 @@ def process_data(file_path):
             "RL": []
         }
 
+        avail_project[name] = 0
+
         for j in range(int(nR)):
             l2 = fh.readline().strip().split()
             skill, level = l2[0], l2[1]
@@ -91,15 +94,17 @@ def basic_algo():
     proj_done = False
 
     for project_name in projects:
+        if avail_project[project_name] == 1:
+            continue
+
         project = projects[project_name]
         roles = project["roles"]
         levels = project["RL"]
 
-        # TODO: Shortlist based on
+        # TODO: Shortlist based on the no. of skills possesed by each
 
         all_avail = True
         contri_allot = {}
-# projects
         itr = 0
         for role in roles:
             levelReq = levels[itr]
@@ -109,10 +114,10 @@ def basic_algo():
             for contri_name in skills[role]:
                 skill_level = skills[role][contri_name]
                 
-                if avail[contri_name] == 0 and skill_level >= levelReq:
+                if avail_contri[contri_name] == 0 and skill_level >= levelReq:
                     contri_allot[contri_name] = [role, (skill_level == levelReq)]
                     skill_avail = True
-                    avail[contri_name] = 1
+                    avail_contri[contri_name] = 1
                     break
 
             if skill_avail == False:
@@ -121,12 +126,16 @@ def basic_algo():
         
         if(all_avail == False):
             for contri in contri_allot:
-                avail[contri] = 0    
+                avail_contri[contri] = 0    
             continue
+        else:
+            for contri in contri_allot:
+                avail_contri[contri] = 0    
 
         # numProj = numProj + 1
         proj_done = True
         final_proj[project_name] = contri_allot
+        avail_project[project_name] = 1
 
         # pprint(contri_allot)
         for contri in contri_allot:
@@ -171,14 +180,14 @@ def wrapper(file_path):
 
 def resetter():
     global contributors
-    global avail
+    global avail_contri
     global skills
     global projects
     global skillsTotal
     global final_proj
 
     contributors = {}
-    avail = {}
+    avail_contri = {}
     skills = {}
     projects = {}
     skillsTotal = set()
