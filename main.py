@@ -86,6 +86,8 @@ def process_data(file_path):
     fh.close()
 
 def basic_algo():
+    proj_done = False
+
     for project_name in projects:
         project = projects[project_name]
         roles = project["roles"]
@@ -93,58 +95,75 @@ def basic_algo():
         # TODO: Shortlist based on
 
         all_avail = True
-        contri_allot = []
+        contri_allot = {}
 
         for role in roles:
             levelReq = roles[role]
             skill_avail = False
 
-            print(role, levelReq)
-
             for contri_name in skills[role]:
                 skill_level = skills[role][contri_name]
                 
-                print(contri_name, role, skill_level)
-                
                 if avail[contri_name] == 0 and skill_level >= levelReq:
-                    contri_allot.append(contri_name)
+                    contri_allot[contri_name] = [role, (skill_level == levelReq)]
                     skill_avail = True
 
             if skill_avail == False:
-                print(skill_avail)
-                all_avail == False
+                all_avail = False
                 break
         
         if(all_avail == False):
-            print(project_name)
+            # print(project_name)
             continue
 
         # numProj = numProj + 1
+        proj_done = True
         final_proj[project_name] = contri_allot
 
+        # pprint(contri_allot)
         for contri in contri_allot:
             avail[contri] = 1
+            if contri_allot[contri][1]:
+                skills[contri_allot[contri][0]][contri] += 1
+                contributors[contri][contri_allot[contri][0]] += 1
+
+
+    return proj_done
+
+def iter_basic():
+    infi = False
+    while infi == False:
+        check = basic_algo()
+        if check == False:
+            infi = True
+            break
 
 
 def submission(file_path="out.txt"):
     oh = open(file_path, 'w')
 
     pprint(final_proj)
-    # oh.writelines(len(final_proj))
+    oh.writelines(str(len(final_proj)))
+    oh.writelines("\n")
 
-    # for proj_name in final_proj:
-    #     oh.writelines(proj_name)
-    #     oh.writelines(" ".join(final_proj[proj_name]))
+    for proj_name in final_proj:
+        oh.writelines(proj_name)
+        oh.writelines("\n")
+        oh.writelines(" ".join(final_proj[proj_name]))
+        oh.writelines("\n")
 
     oh.close()
 
+def wrapper(file_path):
+    process_data(file_path)
+    iter_basic()
+    obj = file_path.split("_")[0]
+    submission(f"{obj}.txt")
+
 if __name__ == '__main__':
-    process_data("a_an_example.in.txt")
-    basic_algo()
-    submission("a.txt")
-    # pprint(avail)
-    # process_data("b_better_start_small.in.txt")
-    # process_data("c_collaboration.in.txt")
-    # process_data("d_dense_schedule.in.txt")
-    # process_data("e_exceptional_skills.in.txt")
-    # process_data("f_find_great_mentors.in.txt")
+    wrapper("a_an_example.in.txt")
+    wrapper("b_better_start_small.in.txt")
+    wrapper("c_collaboration.in.txt")
+    wrapper("d_dense_schedule.in.txt")
+    wrapper("e_exceptional_skills.in.txt")
+    wrapper("f_find_great_mentors.in.txt")
