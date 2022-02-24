@@ -10,13 +10,13 @@ BakhodirD
 ShoppingProv8
 FionaN PhilippI
 DocsNextv2
-SundarP JenK MatasC ClementL
+SundarP JenK ClementL
 BuildMaxv1
-MichalB RuthX NellyY BakhodirG PetarF SergeyV
+MichalB RuthX NellyY BakhodirG SergeyV
 GameProv3
 PhilippY
 DaydreamLitev7
-BakhodirW SundarH BenjaminO
+BenjaminO
 ConnectLitev9
 SundarA
 WebserverProv6

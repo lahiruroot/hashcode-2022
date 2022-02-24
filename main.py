@@ -67,13 +67,16 @@ def process_data(file_path):
             "days": int(days),
             "score": int(score),
             "bb": int(bb),
-            "roles": {}
+            "roles": [],
+            "RL": []
         }
 
         for j in range(int(nR)):
             l2 = fh.readline().strip().split()
             skill, level = l2[0], l2[1]
-            projects[name]["roles"][skill] = int(level)
+            # projects[name]["roles"][skill] = int(level)
+            projects[name]["roles"].append(skill)
+            projects[name]["RL"].append(int(level))
 
     # pprint(contributors, indent=4)
     # print(skillsTotal, indent = 4)
@@ -90,14 +93,17 @@ def basic_algo():
     for project_name in projects:
         project = projects[project_name]
         roles = project["roles"]
+        levels = project["RL"]
 
         # TODO: Shortlist based on
 
         all_avail = True
         contri_allot = {}
-
+# projects
+        itr = 0
         for role in roles:
-            levelReq = roles[role]
+            levelReq = levels[itr]
+            itr += 1
             skill_avail = False
 
             for contri_name in skills[role]:
@@ -106,13 +112,16 @@ def basic_algo():
                 if avail[contri_name] == 0 and skill_level >= levelReq:
                     contri_allot[contri_name] = [role, (skill_level == levelReq)]
                     skill_avail = True
+                    avail[contri_name] = 1
+                    break
 
             if skill_avail == False:
                 all_avail = False
                 break
         
         if(all_avail == False):
-            # print(project_name)
+            for contri in contri_allot:
+                avail[contri] = 0    
             continue
 
         # numProj = numProj + 1
@@ -121,7 +130,7 @@ def basic_algo():
 
         # pprint(contri_allot)
         for contri in contri_allot:
-            avail[contri] = 1
+            # avail[contri] = 1
             if contri_allot[contri][1]:
                 skills[contri_allot[contri][0]][contri] += 1
                 contributors[contri][contri_allot[contri][0]] += 1
@@ -167,7 +176,7 @@ def resetter():
     global projects
     global skillsTotal
     global final_proj
-    
+
     contributors = {}
     avail = {}
     skills = {}
@@ -176,9 +185,11 @@ def resetter():
     final_proj = {}
 
 if __name__ == '__main__':
-    wrapper("a_an_example.in.txt")
+    # wrapper("a_an_example.in.txt")
     wrapper("b_better_start_small.in.txt")
-    wrapper("c_collaboration.in.txt")
-    wrapper("d_dense_schedule.in.txt")
-    wrapper("e_exceptional_skills.in.txt")
-    wrapper("f_find_great_mentors.in.txt")
+    # process_data("b_better_start_small.in.txt")
+    # pprint(projects)
+    # wrapper("c_collaboration.in.txt")
+    # wrapper("d_dense_schedule.in.txt")
+    # wrapper("e_exceptional_skills.in.txt")
+    # wrapper("f_find_great_mentors.in.txt")
